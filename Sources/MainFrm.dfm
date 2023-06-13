@@ -26,6 +26,7 @@ object MainForm: TMainForm
     Color = clWhite
     ParentBackground = False
     TabOrder = 0
+    ExplicitWidth = 614
     DesignSize = (
       618
       95)
@@ -105,14 +106,14 @@ object MainForm: TMainForm
     object Label2: TLabel
       Left = 24
       Top = 60
-      Width = 258
+      Width = 257
       Height = 15
       Caption = 'DevExpress VCL Components Automatic Installer'
     end
     object LblVersion: TLabel
       Left = 203
       Top = 37
-      Width = 21
+      Width = 20
       Height = 15
       Caption = 'v2.x'
     end
@@ -131,6 +132,8 @@ object MainForm: TMainForm
     Align = alClient
     TabOrder = 1
     OnChange = PageFunsChange
+    ExplicitWidth = 598
+    ExplicitHeight = 684
     object TabInstall: TTabSheet
       Caption = 'Install'
       object Panel5: TPanel
@@ -141,6 +144,8 @@ object MainForm: TMainForm
         Align = alClient
         BevelOuter = bvNone
         TabOrder = 0
+        ExplicitWidth = 590
+        ExplicitHeight = 654
         DesignSize = (
           594
           655)
@@ -172,6 +177,7 @@ object MainForm: TMainForm
           RightButton.Visible = True
           TabOrder = 0
           OnRightButtonClick = EditInstallFileDirRightButtonClick
+          ExplicitWidth = 505
         end
         object EditVersion: TEdit
           Left = 523
@@ -181,6 +187,7 @@ object MainForm: TMainForm
           Anchors = [akTop, akRight]
           ReadOnly = True
           TabOrder = 1
+          ExplicitLeft = 519
         end
         object PanTreeList: TPanel
           Left = 8
@@ -191,6 +198,8 @@ object MainForm: TMainForm
           BevelKind = bkTile
           BevelOuter = bvNone
           TabOrder = 2
+          ExplicitWidth = 572
+          ExplicitHeight = 583
         end
       end
     end
@@ -209,7 +218,7 @@ object MainForm: TMainForm
           AlignWithMargins = True
           Left = 8
           Top = 10
-          Width = 578
+          Width = 342
           Height = 15
           Margins.Left = 8
           Margins.Top = 10
@@ -217,7 +226,6 @@ object MainForm: TMainForm
           Margins.Bottom = 10
           Align = alTop
           Caption = 'Uninstall DevExpress Components in the Following Selected IDEs:'
-          ExplicitWidth = 343
         end
         object IDEListView: TListView
           AlignWithMargins = True
@@ -371,7 +379,7 @@ object MainForm: TMainForm
         object Label6: TLabel
           Left = 8
           Top = 69
-          Width = 229
+          Width = 228
           Height = 15
           Caption = 'Download DevExpress VCL Documentation:'
         end
@@ -423,6 +431,8 @@ object MainForm: TMainForm
     Align = alBottom
     BevelOuter = bvNone
     TabOrder = 2
+    ExplicitTop = 793
+    ExplicitWidth = 614
     DesignSize = (
       618
       40)
@@ -434,6 +444,7 @@ object MainForm: TMainForm
       Action = ExitApp
       Anchors = [akTop, akRight]
       TabOrder = 2
+      ExplicitLeft = 517
     end
     object BtnRun: TcxButton
       Left = 439
@@ -443,6 +454,7 @@ object MainForm: TMainForm
       Action = Install
       Anchors = [akTop, akRight]
       TabOrder = 1
+      ExplicitLeft = 435
     end
     object ChkHideBaseComponents: TCheckBox
       Left = 20

@@ -88,11 +88,16 @@ begin
   inherited Create;
   FFullFileName := FullFileName;
   FName := ChangeFileExt(ExtractFileName(FullFileName), '');
-  if Pos('IBX', FName) > 0 then FCategory := dxpcIBX
-    else if Pos('TeeChart', FName)> 0 then FCategory := dxpcTeeChart
-    else if Pos('FireDAC', FName) > 0 then FCategory := dxpcFireDAC
-    else if Pos('BDE', FName) > 0 then FCategory := dxpcBDE
-    else FCategory := dxpcNormal;
+  if Pos('IBX', FName) > 0 then
+    FCategory := dxpcIBX
+  else if Pos('TeeChart', FName) > 0 then
+    FCategory := dxpcTeeChart
+  else if Pos('FireDAC', FName) > 0 then
+    FCategory := dxpcFireDAC
+  else if Pos('BDE', FName) > 0 then
+    FCategory := dxpcBDE
+  else
+    FCategory := dxpcNormal;
   FDescription := '';
   FUsage := dxpuDesigntimeAndRuntime;
   FRequires := TStringList.Create;
@@ -115,23 +120,35 @@ var
   S: String;
   IsInRequiresPart: Boolean;
 begin
-  if not Exists then Exit;
+  if not Exists then
+    Exit;
   DPK := TStringList.Create;
   try
     DPK.LoadFromFile(FullFileName);
     IsInRequiresPart := False;
-    for S in DPK do begin
-      if IsInRequiresPart then begin
-        if Pos(',', S) > 0 then FRequires.Add(Trim(StringReplace(S, ',', '', []))) else begin
+    for S in DPK do
+    begin
+      if IsInRequiresPart then
+      begin
+        if Pos(',', S) > 0 then
+          FRequires.Add(Trim(StringReplace(S, ',', '', [])))
+        else
+        begin
           FRequires.Add(Trim(StringReplace(S, ';', '', [])));
           Break;
         end;
-      end else begin
+      end
+      else
+      begin
         if Pos(DPKDescriptionOptionIdent, S) > 0 then
-          FDescription := Copy(S, Length(DPKDescriptionOptionIdent) + 1, Length(S) - Length(DPKDescriptionOptionIdent) - 2)
-        else if Pos(DPKDesigntimeOnlyOptionIdent, S) > 0 then FUsage := dxpuDesigntimeOnly
-        else if Pos(DPKRuntimeOnlyOptionIdent, S) > 0 then FUsage := dxpuRuntimeOnly
-        else if Trim(S) = DPKRequiresOptionIdent then IsInRequiresPart := True;
+          FDescription := Copy(S, Length(DPKDescriptionOptionIdent) + 1,
+            Length(S) - Length(DPKDescriptionOptionIdent) - 2)
+        else if Pos(DPKDesigntimeOnlyOptionIdent, S) > 0 then
+          FUsage := dxpuDesigntimeOnly
+        else if Pos(DPKRuntimeOnlyOptionIdent, S) > 0 then
+          FUsage := dxpuRuntimeOnly
+        else if Trim(S) = DPKRequiresOptionIdent then
+          IsInRequiresPart := True;
       end;
     end;
   finally
@@ -164,7 +181,9 @@ var
   Package: TDxPackage;
 begin
   Result := 0;
-  for Package in Packages do if Package.Exists then Inc(Result);
+  for Package in Packages do
+    if Package.Exists then
+      Inc(Result);
 end;
 
 function TDxComponent.IsMissingDependents: Boolean;
@@ -183,11 +202,17 @@ procedure TDxComponent.SetState(const Value: TDxComponentState);
 var
   Comp: TDxComponent;
 begin
-  if State = Value then Exit;
-  if not (State in dxcsEditModes) then Exit;
+  if State = Value then
+    Exit;
+  if not(State in dxcsEditModes) then
+    Exit;
   case Value of
-    dxcsInstall:    for Comp in ParentComponents do Comp.State := dxcsInstall;
-    dxcsNotInstall: for Comp in SubComponents do Comp.State := dxcsNotInstall;
+    dxcsInstall:
+      for Comp in ParentComponents do
+        Comp.State := dxcsInstall;
+    dxcsNotInstall:
+      for Comp in SubComponents do
+        Comp.State := dxcsNotInstall;
   end;
   FState := Value;
 end;

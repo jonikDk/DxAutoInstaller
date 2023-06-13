@@ -44,27 +44,36 @@ var
   Package, P: TDxPackage;
 begin
   List.Clear;
-  for CompProfile in Installer.Profile.Components do List.Add(CreateComponent(IDE, CompProfile));
+  for CompProfile in Installer.Profile.Components do
+    List.Add(CreateComponent(IDE, CompProfile));
 
-  for Comp in List do begin
-    for Package in Comp.Packages do begin
+  for Comp in List do
+  begin
+    for Package in Comp.Packages do
+    begin
       // Set Package Dependents;
-      for C in List do if C <> Comp then
-        for P in C.Packages do
-          if Package.Requires.IndexOf(P.Name) >= 0 then begin
-            Package.DependentComponents.Add(C);
-            // Set Component Dependents;
-            if Package.Required then begin
-              if Comp.ParentComponents.IndexOf(C) < 0 then begin
-                Comp.ParentComponents.Add(C);
-                if C.SubComponents.IndexOf(Comp) < 0 then C.SubComponents.Add(Comp);
+      for C in List do
+        if C <> Comp then
+          for P in C.Packages do
+            if Package.Requires.IndexOf(P.Name) >= 0 then
+            begin
+              Package.DependentComponents.Add(C);
+              // Set Component Dependents;
+              if Package.Required then
+              begin
+                if Comp.ParentComponents.IndexOf(C) < 0 then
+                begin
+                  Comp.ParentComponents.Add(C);
+                  if C.SubComponents.IndexOf(Comp) < 0 then
+                    C.SubComponents.Add(Comp);
+                end;
               end;
+              Break;
             end;
-            Break;
-          end;
     end;
     // Set Component State;
-    if not DirectoryExists(TDxProfile.GetComponentDir(Installer.InstallFileDir, Comp.Profile.ComponentName)) then
+    if not DirectoryExists(TDxProfile.GetComponentDir(Installer.InstallFileDir,
+      Comp.Profile.ComponentName)) then
       Comp.State := dxcsNotFound
     else if Comp.GetExistsPackageCount = 0 then
       Comp.State := dxcsNotSupported
@@ -86,10 +95,16 @@ var
   PackageName, FileName: String;
   Package: TDxPackage;
 begin
-  if IsRequiredPackages then List := Component.Profile.RequiredPackages else List := Component.Profile.OptionalPackages;
-  for PackageName in List do begin
-    FileName := TDxProfile.GetPackageFullFileName(Installer.InstallFileDir, Component.Profile.ComponentName, PackageName, IDE);
-    if not FileExists(FileName) then Continue;
+  if IsRequiredPackages then
+    List := Component.Profile.RequiredPackages
+  else
+    List := Component.Profile.OptionalPackages;
+  for PackageName in List do
+  begin
+    FileName := TDxProfile.GetPackageFullFileName(Installer.InstallFileDir,
+      Component.Profile.ComponentName, PackageName, IDE);
+    if not FileExists(FileName) then
+      Continue;
     Package := TDxPackage.Create(FileName);
     Package.Required := IsRequiredPackages;
     Component.Packages.Add(Package);

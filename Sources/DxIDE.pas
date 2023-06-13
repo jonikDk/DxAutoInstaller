@@ -16,7 +16,8 @@ uses
 
 type
   TJclBorRADToolInstallationHelper = class helper for TJclBorRADToolInstallation
-    function CompileDelphiPackageEx(const PackageName, BPLPath, DCPPath, ExtraOptions: string): Boolean;
+    function CompileDelphiPackageEx(const PackageName, BPLPath, DCPPath,
+      ExtraOptions: string; AIsDebug: Boolean): Boolean;
   end;
 
   TDxIDEPlatform = TJclBDSPlatform;
@@ -38,7 +39,11 @@ type
 const
   Win32 = bpWin32;
   Win64 = bpWin64;
-  DxIDEPlatformNames: array[TDxIDEPlatform] of String = (BDSPlatformWin32, BDSPlatformWin64, BDSPlatformOSX32, BDSPlatformOSX64, BDSPlatformAndroid32, BDSPlatformAndroid64, BDSPlatformiOSDevice32, BDSPlatformiOSDevice64, BDSPlatformiOSSimulator, BDSPlatformLinux64);
+  DxIDEPlatformNames: array[TDxIDEPlatform] of String = (
+    BDSPlatformWin32, BDSPlatformWin64, BDSPlatformOSX32, BDSPlatformOSX64,
+    BDSPlatformAndroid32, BDSPlatformAndroid64, BDSPlatformiOSDevice32,
+    BDSPlatformiOSDevice64, BDSPlatformiOSSimulator, BDSPlatformLinux64);
+
   BPLExtName = '.bpl';
   IDEEnvironmentVariablesSectionName = 'Environment Variables';
 
@@ -46,9 +51,32 @@ implementation
 
 { TJclBorRADToolInstallationHelper }
 
-function TJclBorRADToolInstallationHelper.CompileDelphiPackageEx(const PackageName, BPLPath, DCPPath, ExtraOptions: string): Boolean;
+function TJclBorRADToolInstallationHelper.CompileDelphiPackageEx(const PackageName,
+  BPLPath, DCPPath, ExtraOptions: string; AIsDebug: Boolean): Boolean;
+var
+  NewOptions: string;
 begin
-  Result := CompileDelphiPackage(PackageName, BPLPath, DCPPath, ExtraOptions);
+  Self.MapCreate := AIsDebug;
+  //TODO скопировал метод CompileDelphiPackage для того чтобы добавить параметр IsDebug
+  //в вызов DCC.MakePackage
+  //Result := CompileDelphiPackage(PackageName, BPLPath, DCPPath, ExtraOptions);
+  OutputString(Format(LoadResString(@RsCompilingPackage), [PackageName]));
+
+  if not IsDelphiPackage(PackageName) then
+    raise EJclBorRADException.CreateResFmt(@RsENotADelphiPackage, [PackageName]);
+
+  if MapCreate then
+    NewOptions := ExtraOptions + ' -GD'
+  else
+    NewOptions := ExtraOptions;
+
+  Result := DCC.MakePackage(PackageName, BPLPath, DCPPath, NewOptions, AIsDebug)
+    and ProcessMapFile(BinaryFileName(BPLPath, PackageName));
+
+  if Result then
+    OutputString(LoadResString(@RsCompilationOk))
+  else
+    OutputString(LoadResString(@RsCompilationFailed));
 end;
 
 { TDxIDEs }

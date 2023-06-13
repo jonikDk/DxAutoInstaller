@@ -52,7 +52,8 @@ begin
     Options := [flRecursive];
     if FullFileName then Include(Options, flFullNames);
     Result := JclFileUtils.AdvBuildFileList(Path, Attr, List, amSuperSetOf, Options);
-  end else
+  end
+  else
     Result := JclFileUtils.BuildFileList(Path, Attr, List, FullFileName);
 end;
 
@@ -64,7 +65,8 @@ begin
   List := TStringList.Create;
   try
     BuildFileList(FilePath, List, faAnyFile, True, False);
-    for S in List do Windows.DeleteFile(PChar(S));
+    for S in List do
+      Windows.DeleteFile(PChar(S));
   finally
     List.Free;
   end;
@@ -89,7 +91,8 @@ begin
   try
     BuildFileList(FilePath, List, faAnyFile, True, False);
     ForceDirectories(DirPath);
-    for S in List do CopyFile(S, IncludeTrailingPathDelimiter(DirPath) + ExtractFileName(S), True);
+    for S in List do
+      CopyFile(S, IncludeTrailingPathDelimiter(DirPath) + ExtractFileName(S), True);
   finally
     List.Free;
   end;
@@ -102,7 +105,8 @@ begin
   List := TStringList.Create;
   try
     BuildFileList(IncludeTrailingPathDelimiter(DirPath) + '*.*', List, faAnyFile, True, False);
-    Result := (List.Count = 0) or ((List.Count = 1) and (List.IndexOf(ExcludeTrailingPathDelimiter(ExcludeFile)) = 0));
+    Result := (List.Count = 0) or ((List.Count = 1) and
+              (List.IndexOf(ExcludeTrailingPathDelimiter(ExcludeFile)) = 0));
   finally
     List.Free;
   end;
@@ -126,14 +130,16 @@ begin
   MS := TMemoryStream.Create;
   try
     MS.CopyFrom(RS, RS.Size);
-    if VerQueryValue(MS.Memory, '\', Pointer(Buffer), BufferLen) then begin
+    if VerQueryValue(MS.Memory, '\', Pointer(Buffer), BufferLen) then
+    begin
       Major := Buffer.dwFileVersionMS shr 16;
       Minor := Buffer.dwFileVersionMS and $FFFF;
       Release := Buffer.dwFileVersionLS shr 16;
       //Build := Buffer.dwFileVersionLS and $FFFF;
 
       Result := Format('v%d.%d', [Major, Minor]);
-      if Release <> 0 then Result := Result + '.' + IntToStr(Release);
+      if Release <> 0 then
+        Result := Result + '.' + IntToStr(Release);
     end;
   finally
     MS.Free;
@@ -145,7 +151,7 @@ procedure ExportResourceToFile(const FileName, ResourceName, ResourceType: Strin
 var
   RS: TResourceStream;
 begin
-  RS := TResourceStream.Create(HInstance,ResourceName, PChar(ResourceType));
+  RS := TResourceStream.Create(HInstance, ResourceName, PChar(ResourceType));
   try
     RS.SaveToFile(FileName);
   finally
@@ -163,7 +169,8 @@ end;
 constructor TDxForm.Create(AOwner: TComponent);
 begin
   inherited;
-  if Screen.Fonts.IndexOf(Font.Name) < 0 then Font.Name := 'Tahoma';
+  if Screen.Fonts.IndexOf(Font.Name) < 0 then
+    Font.Name := 'Tahoma';
 end;
 
 end.
