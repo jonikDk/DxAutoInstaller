@@ -1,11 +1,10 @@
 object DxResourceModule: TDxResourceModule
   OnCreate = DataModuleCreate
-  Height = 225
-  Width = 323
-  PixelsPerInch = 144
+  Height = 139
+  Width = 240
   object EditRepository: TcxEditRepository
-    Left = 60
-    Top = 60
+    Left = 40
+    Top = 40
     PixelsPerInch = 144
     object CheckBoxItem: TcxEditRepositoryCheckBoxItem
       Properties.ImmediatePost = True
@@ -104,7 +103,7 @@ object DxResourceModule: TDxResourceModule
     HintStyle.IconType = cxhiCurrentApplication
     LookAndFeel.NativeStyle = False
     OnShowHintEx = HintStyleControllerShowHintEx
-    Left = 216
-    Top = 60
+    Left = 144
+    Top = 40
   end
 end

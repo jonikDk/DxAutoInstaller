@@ -49,6 +49,8 @@ const
 
 implementation
 
+uses JclCompilerUtils, JclDevToolsResources;
+
 { TJclBorRADToolInstallationHelper }
 
 function TJclBorRADToolInstallationHelper.CompileDelphiPackageEx(const PackageName,
